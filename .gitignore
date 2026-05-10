@@ -1,0 +1,7 @@
+prototype/
+.vscode/
+brainstorm/
+build/
+config.json
+build_unix/
+build_win/
