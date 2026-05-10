@@ -7,7 +7,6 @@
 #include <QJsonObject>
 
 #include "leftbar.h"
-#include "topbar.h"
 #include "tabbar.h"
 #include "maintab.h"
 #include "flightdisplay.h"
@@ -15,14 +14,13 @@
 
 #ifndef MAINUI
 #define MAINUI 
-class MainUI : public QWidget {
+class MainUI : public QMainWindow {
     Q_OBJECT
 public:
     explicit MainUI(QWidget *parent = nullptr);
     virtual ~MainUI();
 
     QJsonObject config;
-    TopBar* topbar;
     SideBar* sidebar; 
     TabBar* tabbar;
     MainTab* maintab;
