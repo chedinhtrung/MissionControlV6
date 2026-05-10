@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.16)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)  # auto generate commands for intellisense
+
 project(MissionControl)
 
 # set(CMAKE_PREFIX_PATH "C:/Qt/6.7.3/msvc2019_64/lib/cmake") # This is for Windows 
