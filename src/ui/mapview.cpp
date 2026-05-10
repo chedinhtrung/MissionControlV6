@@ -5,6 +5,7 @@
 #include <QDebug>
 #include <QWebEngineSettings>
 #include <QTimer>
+#include <QLocale>
 
 MapView::MapView(QWidget* parent, QString map_api_key) : QWebEngineView(parent){
     settings()->setAttribute(QWebEngineSettings::JavascriptEnabled, true);
@@ -27,7 +28,7 @@ MapView::MapView(QWidget* parent, QString map_api_key) : QWebEngineView(parent){
 }
 
 void MapView::onTestUpdate(){
-    static float lon, lat, head = 0.0;
+    static float lon=0.0, lat=0.0, head=0.0;
     lon += 0.001;
     lat += 0.001;
     head += 1;
@@ -39,10 +40,12 @@ MapView::~MapView(){
 }
 
 void MapView::updateLocation(float lon, float lat, float heading){
-    char buf[50];
-    sprintf(buf, "update_location(%f, %f, %f)", lon, lat, heading);
-    //qDebug() << buf;
-    QString JSCall = QString(buf);
+    const QLocale cLocale = QLocale::c();
+    const QString JSCall = QString("update_location(%1, %2, %3)")
+                               .arg(cLocale.toString(lon, 'f', 6))
+                               .arg(cLocale.toString(lat, 'f', 6))
+                               .arg(cLocale.toString(heading, 'f', 6));
+    //qDebug() << JSCall;
     page()->runJavaScript(JSCall);
 }
 

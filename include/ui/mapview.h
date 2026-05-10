@@ -12,6 +12,8 @@ class MapView : public QWebEngineView {
     ~MapView();
     QString loadHtml(QString map_api_key="");
     void updateLocation(float lon, float lat, float heading=0.0);
+
+    private slots:
     void onTestUpdate();
 
 };
