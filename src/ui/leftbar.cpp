@@ -1,4 +1,5 @@
 #include "ui/leftbar.h"
+#include "ui/mainui.h"
 #include <QScreen>
 #include <QApplication>
 
@@ -12,61 +13,72 @@ QString style_sidebar_button = R"(
     QPushButton:hover {background-color:#595958;}
 )";
 
-SideBar::SideBar(QWidget* parent) : QWidget(parent){
+SideBar::SideBar(QWidget *parent, MainUI* mainui) : QToolBar(parent)
+{
     QScreen *screen = QApplication::primaryScreen();
-    int screenHeight = screen->geometry().height();
-    int screenWidth = screen->geometry().width();
-    int width = static_cast<int>(screenWidth/25);
-    int icon_width = static_cast<int>(width/2);
+    const int screenHeight = screen ? screen->geometry().height() : 1080;
+    int icon_width = static_cast<int>(screenHeight * 0.03);
+    if (icon_width < 20) icon_width = 20;
+    if (icon_width > 44) icon_width = 44;
 
-    setFixedWidth(width);
     setStyleSheet(style_sidebar);
-    layout = new QVBoxLayout();
-    layout->setSpacing(0);
-    layout->setContentsMargins(0, 0, 0, 0);
 
-    account = new QPushButton();
-    account->setFixedHeight(width);
-    account->setIcon(QIcon(":/login.png"));
-    account->setIconSize(QSize(icon_width, icon_width));
-    account->setStyleSheet(style_sidebar_button);
+    mission = new QPushButton();
+    mission->setIcon(QIcon(":/login.png"));
+    mission->setIconSize(QSize(icon_width, icon_width));
+    mission->setStyleSheet(style_sidebar_button);
 
-    nav = new QPushButton();
-    nav->setFixedHeight(width);
-    nav->setIcon(QIcon(":/map.png"));
-    nav->setIconSize(QSize(icon_width, icon_width));
-    nav->setStyleSheet(style_sidebar_button);
+    debug = new QPushButton();
+    debug->setIcon(QIcon(":/map.png"));
+    debug->setIconSize(QSize(icon_width, icon_width));
+    debug->setStyleSheet(style_sidebar_button);
 
-    log = new QPushButton();
-    log->setFixedHeight(width);
-    log->setIcon(QIcon(":/log.png"));
-    log->setIconSize(QSize(icon_width, icon_width));
-    log->setStyleSheet(style_sidebar_button);
+    setting = new QPushButton();
+    setting->setIcon(QIcon(":/log.png"));
+    setting->setIconSize(QSize(icon_width, icon_width));
+    setting->setStyleSheet(style_sidebar_button);
 
-    power = new QPushButton();
-    power->setFixedHeight(width);
-    power->setIcon(QIcon(":/power.png"));
-    power->setIconSize(QSize(icon_width, icon_width));
-    power->setStyleSheet(style_sidebar_button);
+    planner = new QPushButton();
+    planner->setIcon(QIcon(":/sos.png"));
+    planner->setIconSize(QSize(icon_width, icon_width));
+    planner->setStyleSheet(style_sidebar_button);
 
-    sos = new QPushButton();
-    sos->setFixedHeight(width);
-    sos->setIcon(QIcon(":/sos.png"));
-    sos->setIconSize(QSize(icon_width, icon_width));
-    sos->setStyleSheet(style_sidebar_button);
-
-    layout->addWidget(account);
-    layout->addWidget(nav);
-    layout->addWidget(log);
-
-    QWidget* spacer = new QWidget();
+    QWidget *spacer = new QWidget();
     spacer->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding);
-    layout->addWidget(spacer);
-    layout->addWidget(sos);
-    layout->addWidget(power);
-    this->setLayout(layout);
+
+    addWidget(mission);
+    addWidget(planner);
+    addWidget(debug);
+    
+    addWidget(spacer);
+
+    addWidget(setting);
+
+    mainUI = mainui;
+
+    connect(mission, &QPushButton::clicked, this, [this]() {
+        if (mainUI)
+            mainUI->setActivity(Activity::Mission);
+    });
+
+    connect(planner, &QPushButton::clicked, this, [this]() {
+        if (mainUI)
+            mainUI->setActivity(Activity::Planner);
+    });
+
+    connect(debug, &QPushButton::clicked, this, [this]() {
+        if (mainUI)
+            mainUI->setActivity(Activity::Debug);
+    });
+
+    connect(setting, &QPushButton::clicked, this, [this]() {
+        if (mainUI)
+            mainUI->setActivity(Activity::Setting);
+    });
+
+    
 }
 
-SideBar::~SideBar(){
-
+SideBar::~SideBar()
+{
 }

@@ -1,3 +1,4 @@
+#pragma once
 #include <QMainWindow>
 #include <QWidget>
 #include <QPushButton>
@@ -5,29 +6,63 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QJsonObject>
+#include <QDockWidget>
+
 
 #include "leftbar.h"
-#include "tabbar.h"
-#include "maintab.h"
 #include "flightdisplay.h"
 #include "mapview.h"
+#include "videodisplay.h"
 
-#ifndef MAINUI
-#define MAINUI 
-class MainUI : public QMainWindow {
+struct Workspace
+{
+    QList<QDockWidget*> visibleDocks;
+    QByteArray layout;
+};
+
+class MainUI : public QMainWindow
+{
     Q_OBJECT
 public:
     explicit MainUI(QWidget *parent = nullptr);
     virtual ~MainUI();
 
     QJsonObject config;
-    SideBar* sidebar; 
-    TabBar* tabbar;
-    MainTab* maintab;
-    FlightDisplay* flightdisp;
-    MapView* map;
-    
 
-public slots:
+    Activity current_activity;
+
+    // Sidebar controls what activity we are in 
+    SideBar* sidebar; 
+
+    // All the docks 
+
+    // Mission Control
+    QDockWidget* mapDock;
+    QDockWidget* flightDisplayDock;
+    QDockWidget* videoDock;
+    QDockWidget* vehicleInfoDock;
+    QDockWidget* telemetryDock;
+
+    // Planner
+
+
+    // Debug 
+    QDockWidget* logDock;
+    QDockWidget* vehicleDebugTelemetryDock;
+    QDockWidget* vehicleOrientationVizDock;
+    QDockWidget* terminalDock;
+
+    QList<QDockWidget*> allDocks;
+
+    QMap<Activity, Workspace> workspaces;
+
+    void setActivity(Activity activity);
+
+
+    public slots:
+
+    private: 
+        void create_docks(); // initialize the UI element and put them into docks
+        void setupMissionLayout();
+        void setupDebugLayout();
 };
-#endif

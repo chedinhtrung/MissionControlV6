@@ -1,22 +1,28 @@
-#ifndef SIDEBAR
-#define SIDEBAR
-#include <QWidget>
+#pragma once
 #include <QPushButton>
 #include <QVBoxLayout>
+#include <QToolBar>
 
-class SideBar : public QWidget { 
+class MainUI;
+
+enum Activity {
+    Mission,
+    Planner,
+    Debug,
+    Setting
+};
+
+class SideBar : public QToolBar {
     Q_OBJECT
 
     public:
-        SideBar(QWidget* parent=nullptr);
+        SideBar(QWidget* parent=nullptr, MainUI* mainui=nullptr);
         ~SideBar();
 
-        QVBoxLayout* layout;
-        QPushButton* account;
-        QPushButton* nav;
-        QPushButton* log;
-        QPushButton* power;
-        QPushButton* sos;
-};
+        MainUI* mainUI;
 
-#endif
+        QPushButton* mission;
+        QPushButton* planner;
+        QPushButton* debug;
+        QPushButton* setting;
+};
