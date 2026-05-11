@@ -33,6 +33,7 @@ MainUI::MainUI(QWidget *parent) : QMainWindow(parent)
     // init UI elements and organize them
 
     create_docks();
+    createViewMenu();
     setupMissionLayout();
     setupDebugLayout();
 
@@ -110,6 +111,15 @@ void MainUI::create_docks()
             terminalDock,
             vehicleOrientationVizDock,
             vehicleDebugTelemetryDock};
+}
+
+void MainUI::createViewMenu()
+{
+    QMenu *viewMenu = menuBar()->addMenu("View");
+    for (QDockWidget *dock : allDocks)
+    {
+        viewMenu->addAction(dock->toggleViewAction());
+    }
 }
 
 void MainUI::setupMissionLayout()

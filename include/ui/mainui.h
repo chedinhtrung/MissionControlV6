@@ -63,6 +63,7 @@ public:
 
     private: 
         void create_docks(); // initialize the UI element and put them into docks
+        void createViewMenu();
         void setupMissionLayout();
         void setupDebugLayout();
 };
